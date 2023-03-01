@@ -1,0 +1,151 @@
+
+Chapter 89:
+
+
+1. JavaScript 是一种 高级的（high level）、基于原型的（prototype-based）、面向对象的（Object-oriented）、多范式的（multi-paradigm）、解释或即时编译（interpreted or just-in-time complied）、动态的（Dynamic）、单线程的（single-threaded）、垃圾收集的（garbage-collected）编程语言，具有一流的功能和非阻塞事件循环并发模型。
+
+1) High-level(高级的)：任何计算机程序都需要用到一些资源，比如CPU、内存等，低级的语言（例如C语言）需要手动管理这些资源，高级的语言（例如Python、Java等）就不需要管理资源，但也有缺点，就是程序不会那么快
+2) Garbage-collected(垃圾收集算)：在js中的一种算法，可以从内存中自动删除旧的、未使用的对象 
+3) Interpreted or just-in-time complied(解释型或即时编译的)：机器只认识机器码（0和1），我们写了程序需要被翻译成机器码——编译，即时编译就是边写边翻译
+4) Multi-paradigm(多范式的)：在编程中，多范式是一种方法以及构建代码的整体模式，这会最终指导编码风格和技术。目前流行的三种范式：程序化的(procedural)、面向对象的(objext-oriented programming，OOP)、函数式编程(Functional programming，FP)；
+  NOTE：范式可分类为命令式（Imperative）和声明性的（Declarative）
+
+5) Prototype-based and Object-oriented(基于原型的、面向对象的)：以数组为例，数组是一个对象，我们可以直接调用数组中的push、pop方法，因为数组有一个原型，这些方法均继承自原型。
+6) First-class  functions(头等函数)：即将函数视为常规变量，可以从函数中返回函数。
+7) Dynamic Language(动态的语言)：Dynamic意味着Dynamic-type 动态类型，即js不会将数据的类型分配给变量，仅在程序执行时才公布数据的类型
+8) Single-threaded(单线程的)
+9) non-blocking event loop concurrency model(非阻塞事件循环并发模型）
+concurrency model(并发模型)--js引擎如何处理多个任务同时发生
+js运行在单线程中，一次只能做一件事情；
+线程其实就是一段命令，在CPU中执行；
+对于需要长时间运行的任务(比如从远程服务器获取数据)：使用event loop(事件循环)，事件循环让长时间运行的任务在后台执行，在执行完毕后再放回主线程。
+
+
+
+Chapter 090. The JavaScript Engine and Runtime
+        js引擎和运行时间？
+
+1. JavaScript 引擎
+  包含一个调用栈和一个堆，调用栈——代码实际执行的地方，存放执行上下文；堆——非结构化内存池，存放应用程序所需的所有对象。
+2. 代码是如何编译成机器码的？
+  Step1 解析代码（Parsing）：阅读代码，解析为抽象语法树 AST
+  Step2 编译（compilation）：将AST编译成机器码
+  Step3 执行（execution）：立即执行
+  在执行期间会对代码进行优化（Optimization）
+
+3. JavaScript Runtime
+  浏览器：
+  将js Runtime想象成一个大盒子，里面包含着我们需要的所有东西：js引擎（核心）、Web API（DOM Timers FetchAPI）、回调队列（一个数据结构，包含所有准备执行的回调函数，在call stack 有空间的时候，会把回调队列里的函数放到stack中等待后续的执行）
+  
+  node.js：
+  也是将js Runtime想象成大盒子，包含的东西有些不同：js引擎、C++ bindings(C++ 绑定)&线程池(Thread pool)、回调队列
+
+
+
+Chapter 091. Execution Contexts and the Call Stack
+        执行上下文和调用堆栈
+
+1. JS在经历完编译后经历了什么？怎么执行的？
+  Step1: 创建一个全局执行上下文（global execution context）for the top-level code——意思是只执行在function外的代码;
+  Step2: （在全局上下文环境中）执行top-level code;
+  Step3: 执行函数，以及等待回调
+
+2. 执行上下文的含义：
+  执行上下文是一种环境，在其中执行一段JS代码，像是一个盒子，里面装着代码和执行代码必需的东西，比如传递给函数的局部变量或者参数等。JS code总是在执行上下文中运行。
+  举例说明：披萨外卖盒子📦里装着🍕、🍴和🧾，其中📦就是执行上下文，🍕就是代码，而🍴和🧾就是执行代码必需的物品，吃披萨是在盒子里吃的。
+
+  无论JS项目多大，他只有一个全局执行上下文作为默认上下文存在，用于执行top-level code。
+  每个函数调用，都会创建一个新的执行上下文，其中包含执行该函数所有必要的信息；
+  所有的执行上下文组成了call Stack(调用堆栈)；
+
+3. 执行上下文里都包含什么？
+  1) 变量环境 Variable Environment: 存储所有变量（let, const and var declarations）和函数声明(Functions)、一个特殊的参数对象(arguments object)
+  2) 作用域链 Scope chain：对位于当前函数之外的变量的引用
+  3) this关键字 this keyword 
+  NOTE : 箭头函数不包含argument object 和 this keyword，他们使用最亲近的父级函数中的argument object和this keyword
+
+4. 调用堆栈 the call stack：
+  执行上下文堆叠的地方，为了跟踪执行的程序所在的位置。具体就是，全局的top-level code先push进栈，然后在调用到函数的时候，再将该函数的执行上下文push进栈中，以此类推，按照进栈的执行顺序执行（先进后出）。当栈顶的执行上下文执行完毕后，需要被pop出栈，以此类推直到栈顶的函数执行完毕，才一级一级地向栈底执行，直到全局执行上下文。
+
+
+Chapter 092. Scope and The Scope Chain 
+            作用域与作用域链
+
+1. 作用域 Scope 是什么？
+Ans: 
+  作用域是在这个区域内声明的变量和函数的有效访问范围。作用域控制着变量与函数的可见性和生命周期。
+
+  作用域可分为： 全局作用域  局部作用域（函数作用域、块级作用域）
+
+NOTE: 作用域与执行上下文的区别——作用域是在书写代码时函数声明的位置确定的，并不是函数执行时确定的；执行上下文是函数执行时（前）创建的。执行上下文中的this关键词，就是由函数执行（被调用）时确定的。
+
+  1) 全局作用域 Global Scope
+    位于所有函数以及块的外面，并可以在所有函数及块中被访问。
+  
+  2) 函数作用域 Function Scope
+    仅在函数内可以被访问到，也叫本地作用域Local Scope
+  
+  3) 块级作用域 Block Scope(ES6)
+    在块内（如if块、for循环块等）创建的变量，仅在块内可以被访问，但是！只能应用于let和const变量中，var是不被允许的（这也是为什么说var不安全）。在strict mode下，函数实际也算块级作用域。
+
+2. 作用域链 The scope chain 是什么？
+Ans：
+  1）作用域链保证了执行上下文中的 变量 和 函数 的有序访问。
+  2）作用域链由当前执行上下文及其上级执行上下文（直到全局执行上下文）的 变量对象 组成的集合，最前端是当前执行上下文中的变量对象，如果是函数就称为活动对象，最底端一直是全局执行上下文中的变量对象。
+  3）作用域链规定了变量和函数的查找规则。作用域链是自上而下的进行寻找，不可逆！
+  4) 作用域链与函数调用的顺序毫无关系！
+
+
+Chapter 94. Hoisting and the TDZ
+            变量提升 函数提升
+
+1. 什么是Hoisting（提升）？
+Ans：
+  指的是使一些变量可以在被声明之前就可以被访问到或被使用。
+  即在一个作用域内，变量的定义会被移到代码的顶部，而变量的赋值则保持原来的位置。
+  先定义，后使用，变量定义都要放在代码开头
+
+2. Hoisting怎么工作的？
+                       是否提升？     在变量环境中的初始值       作用域
+
+函数声明                 是            actual function           块级
+
+var变量                  是               undefined              函数
+
+let和const变量            否         <uninitialized>, TDZ        块级
+
+函数表达式和箭头函数            取决于用的是let、var还是const
+
+
+3. 暂时性死区 Tmporal Dead Zone TDZ
+  如果区块中存在let 和const 命令，这个区块对这些命令声明的变量，从一开始就形成了封闭的作用域，凡是在声明之前就使用这些变量的，都会报错。
+
+  ES6 规定暂时性死区和let、const语句不出现变量提升，主要是为了减少运行时错误，防止在变量声明前就使用这个变量，从而导致意料之外的行为。
+
+  只要一进入当前作用域，所要使用的变量就已经存在了，但是不可获取，只有等到声明变量的那一行代码出现，才可以获取和使用该变量。
+
+
+Chapter 096. this keyword IMPORTANT
+            this关键字
+
+1. 什么是this 关键字？
+Ans: 
+  this关键字是为每一个执行上下文（每一个函数）创建的，谁调用this 就指向谁。
+
+  this不是静态的，它取决于函数如何调用，且仅被调用时才会被赋值
+
+  this是指向调用方法的对象。
+
+2. this 关键字在不同调用情景下的情况
+  1）Method(附加到对象的函数): this = <Object that is calling the method> 指向正在调用该方法的对象。
+  2) 作为常规函数调用： this = undefined 仅在严格模式下起作用
+  3) 箭头函数： 箭头函数没有自己的this 关键字 this = <this of surrounding function，比如父函数> 箭头函数中的this keyword 也叫lexical this keyword--词汇this关键字。
+  4）事件监听器 event listener：this = <DOM element that the handler is attached to> this始终指向处理程序函数所附加的DOM元素
+
+  NOTE：this keyword 永远不会指向函数本身及其变量环境
+
+
+Chapter 098. Regular functions vs. Arrow functions
+              常规函数 vs. 箭头函数
+
+1. 

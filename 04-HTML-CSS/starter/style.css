@@ -1,0 +1,73 @@
+/* global reset:全局重置, 使用*{} 
+一个box包含content（ width, height）, padding, border, margin
+content: 内容，所有文本、图像以及我们指定的其他内容
+padding: 填充，是围绕在内容外的透明的区域，但仍在box的内部，可以使用它创建空白处，可以通过css改变它的属性
+border: 边框，围绕在padding外的部分
+margin: 边距，边距并不在box内部而是在外部，也是空白的一部分，可以想象为boxs之间的空白处 
+fill area: 填充区域，适用范围为box内部的一切（也就是除了margin以外的上述所有）*/
+* {
+  margin: 0;
+  padding: 0;
+  /* 设置边框的框大小属性，这样在padding超过范围的时候，也只会显示这个大小的内容，不会报错 */
+  box-sizing: border-box;
+}
+
+/* ✅ 066. CSS基础 */
+body {
+  background-color: rgb(255, 247, 201);
+  /* 设置字体,font-family具有继承性，body里的所有子元素都可以被设置为改字体 */
+  font-family: Arial;
+  /* 改变字体大小，但像h1, h2这种在浏览器会有默认字体，如果我们不改变他们就不会受这个font-size的影响 */
+  font-size: 20px;
+  padding: 50px;
+}
+/* 定义h1, h2这种标题的样式需要特别指定 */
+h1 {
+  font-size: 40px;
+  /* 可以定义在哪里（上下左右）增加margin */
+  margin-bottom: 25px;
+}
+
+h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* 对HTML文件中的class进行样式改变，使用.classname{} */
+.first {
+  color: red;
+}
+
+/* 对表格(form)或者div进行样式改变, 使用 #formid{} 或者 #divname{} */
+
+#your-name {
+  background-color: rgb(255, 220, 105);
+  /* border:边界属性, 可以同时赋值定义很多内容 (line-width, line-style, color)*/
+  border: 5px solid #444;
+  width: 400px;
+  padding: 25px;
+  margin-top: 30px;
+}
+
+p {
+  margin-bottom: 20px;
+}
+
+input,
+button {
+  padding: 10px;
+  font-size: 16px;
+}
+
+a {
+  background-color: yellowgreen;
+}
+
+/* 子选择器的设置 */
+#your-name h2 {
+  color: olivedrab;
+}
+
+#meme-img {
+  width: 300px;
+}

@@ -1,0 +1,59 @@
+<!-- ✅ 065,066.html, CSS基础速通 -->
+
+<!-- 在vscode中简单创建html结构的方法 -->
+<!-- ! + tab -->
+<!DOCTYPE html>
+<html lang="en">
+  <!-- head里放的是对网页页面的设置 -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- 使用link标签,通过herf来连接到.css文件, 并定义rel属性将文件设置为样式表stylesheet-->
+    <link href="style.css" rel="stylesheet" />
+    <!-- 网页的名称 -->
+    <title>Learning HTML & CSS</title>
+  </head>
+  <!-- body里放显示在页面上的内容 -->
+  <body>
+    <!-- h1表示加大的标题 -->
+    <h1>JavaScript is fun, but so is HTML & CSS!</h1>
+    <!-- p指的是段落 -->
+    <!-- class 和 id 适用于识别的属性，非常重要，class内容可以重复，id不可以重复 -->
+    <p class="first">
+      You can learn JavaScript without HTML and CSS, but for DOM manipulation
+      it's useful to have some basic ideas of HTML & CSS.
+      <!-- anchor element 锚元素，也是内联元素(inline element)，因为是直接接在段落里面的内容-->
+      <!-- href属性可以添加链接 -->
+      You can see a cool boy at here ↓
+      <a
+        href="https://baike.baidu.com/item/%E7%9B%AE%E9%BB%91%E8%8E%B2/49862519?fr=aladdin"
+        >❤meme❤
+      </a>
+    </p>
+    <!-- 像标题这种需要重新换行重开的就是块元素(block element) -->
+    <h2>Another Heading</h2>
+    <p class="second">Just another paragraph.</p>
+
+    <!-- img element 没有结束标签，直接在结尾的括号前加上反斜杠 -->
+    <img
+      id="meme-img"
+      src="https://qianp.com/uploads/images/kind/20221216/20221216100146_91934.jpg"
+    />
+
+    <!-- 创建一个HTML表单来了解更多 -->
+    <!-- 最常用的box是div，div是通用框，没有任何意义，只是把所有内容放入这个div中，用CSS的时候比较有用，注意id的命名方法为xxx-xxx -->
+    <!-- <div id="your-name"> -->
+    <!-- 但创建表单 HTML有更好的表达方式：form -->
+    <form id="your-name">
+      <h2>Your name here</h2>
+      <p class="first">Please fill in this form :)</p>
+
+      <!-- input:输入 placeholder:占位符 input也是一个没有结束标签的元素 这一步就是在创建一个带有输入框的表单了 -->
+      <input type="text" placeholder="Your name" />
+      <!-- button:按钮 -->
+      <button>OK!</button>
+      <!-- </div> -->
+    </form>
+  </body>
+</html>
